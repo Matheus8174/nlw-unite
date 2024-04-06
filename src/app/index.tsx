@@ -1,5 +1,7 @@
+import React from 'react';
+
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { View, Image, StatusBar } from 'react-native';
+import { View, Image, StatusBar, Alert } from 'react-native';
 import { Link } from 'expo-router';
 
 import Input from '@/components/input';
@@ -9,6 +11,13 @@ import Logo from '@/assets/logo.png';
 import { colors } from '@/styles/colors';
 
 function Home() {
+  const codeRef = React.useRef('');
+
+  function handleAcessCredential() {
+    if(!codeRef.current.trim()) return
+      Alert.alert('Ingresso', 'Informe o código do ingresso');
+  }
+
   return (
     <View className="flex-1 p-8 bg-green-500 items-center justify-center">
       <StatusBar barStyle='light-content' />
@@ -23,16 +32,19 @@ function Home() {
             color={colors.green[200]}
           />
 
-          <Input.Field placeholder='Código do ingresso' />
+          <Input.Field
+            placeholder='Código do ingresso'
+            onChangeText={(text) => codeRef.current = text}
+          />
         </Input>
 
-        <Button text='Acessar credencial' />
+        <Button text='Acessar credencial' onPress={handleAcessCredential} />
 
         <Link
           href="/register"
           className='text-gray-100 text-base font-bold text-center mt-8'
         >
-          Ainda não possui ingresso?
+          Ainda não possui ingresso? {codeRef.current}
         </Link>
       </View>
     </View>
